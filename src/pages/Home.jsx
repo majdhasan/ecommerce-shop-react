@@ -1,8 +1,8 @@
-import React , {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import { fetchProducts } from '../services/api'
-import {config} from '../services/config'
+import { config } from '../services/config'
 import ProductCard from '../components/ProductCard';
 
 const useStyles = makeStyles(() => ({
@@ -14,13 +14,18 @@ const useStyles = makeStyles(() => ({
 
 function Home() {
 
-    const [products , setProducts] = useState([])
-
+    const [products, setProducts] = useState([])
     useEffect(() => {
         const fetchData = async () => {
-            const data = await fetchProducts();
-
+            try {
+                const data = await fetchProducts();
+                console.log(data);
+                setProducts(data)
+            } catch (e) {
+                console.log(e);
+            }
         }
+        fetchData();
     }, [])
 
 
@@ -28,28 +33,13 @@ function Home() {
     return (
 
         <Grid container className={classes.container} spacing={3}>
-          
-    
-            <Grid xs={12} sm={6} md={4} item>
-                <ProductCard></ProductCard>
-            </Grid>
-            <Grid xs={12} sm={6} md={4} item>
-                <ProductCard></ProductCard>
-            </Grid>
-
-            <Grid xs={12} sm={6} md={4} item>
-                <ProductCard></ProductCard>
-            </Grid>
-            <Grid xs={12} sm={6} md={4} item>
-                <ProductCard></ProductCard>
-            </Grid>
-
-            <Grid xs={12} sm={6} md={4} item>
-                <ProductCard></ProductCard>
-            </Grid>
-            <Grid xs={12} sm={6} md={4} item>
-                <ProductCard></ProductCard>
-            </Grid>
+            {products.map(product => {
+                return (
+                    <Grid key={product.id} xs={12} sm={6} md={4} item>
+                        <ProductCard product={product}></ProductCard>
+                    </Grid>
+                )
+            })}
         </Grid>
 
     )

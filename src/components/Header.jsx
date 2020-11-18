@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
     marginLeft: "5px",
     [theme.breakpoints.up('sm')]: {
-      display: 'block',
+      display: 'flex',
+      flex: "100"
     },
   },
   search: {
