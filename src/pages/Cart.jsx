@@ -9,10 +9,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { CartContext } from '../contexts/cartContext'
 import DeleteIcon from '@material-ui/icons/Delete';
-import {Link} from 'react-router-dom'
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
-
+import Avatar from '@material-ui/core/Avatar';
+import { appConfig } from '../services/config'
 
 const useStyles = makeStyles({
     table: {
@@ -21,9 +21,20 @@ const useStyles = makeStyles({
     tableContainer: {
         marginTop: "30px"
     },
-    delete:{
+    delete: {
         color: "black"
+    },
+    avatar: {
+        display: "block",
+        maxHeight: "120px",
+        maxWidth: "120px",
+        width: "auto",
+        height: "auto",
+    },
+    avatarCol: {
+        maxWidth: "20px"
     }
+
 });
 
 function ccyFormat(num) {
@@ -31,7 +42,7 @@ function ccyFormat(num) {
 }
 
 export default function Cart() {
-    const { cart } = useContext(CartContext);
+    const { cart, removeFromCart } = useContext(CartContext);
     const { items = [], cartTotal = 0 } = cart;
     const classes = useStyles();
 
@@ -40,6 +51,7 @@ export default function Cart() {
             <Table className={classes.table} aria-label="spanning table">
                 <TableHead>
                     <TableRow>
+                        <TableCell></TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell align="right">Qty.</TableCell>
                         <TableCell align="right">Sum</TableCell>
@@ -49,25 +61,25 @@ export default function Cart() {
                 <TableBody>
                     {items.map((item) => (
                         <TableRow key={item.name}>
+                            <TableCell className={classes.avatarCol}>
+                                <Avatar variant="rounded" alt={item.name} src={`${appConfig.apiURL}${item.photo.url}`} className={classes.avatar} />
+                            </TableCell>
                             <TableCell>{item.name}</TableCell>
                             <TableCell align="right">{item.qty}</TableCell>
-                            <TableCell align="right">{ccyFormat(item.price)}</TableCell>
+                            <TableCell align="right">{ccyFormat(item.qty * item.price)}€</TableCell>
                             <TableCell align="right">
-                                <Link to='/cart' className={classes.link}>
-                                    <IconButton aria-label="show cart" color="inherit">
-                                        <Badge className={classes.delete}>
-                                            <DeleteIcon />
-                                        </Badge>
-                                    </IconButton>
-                                </Link>
+                                <IconButton onClick={()=>{removeFromCart(item)}} aria-label="show cart" color="inherit">
+                                    <Badge className={classes.delete}>
+                                        <DeleteIcon />
+                                    </Badge>
+                                </IconButton>
                             </TableCell>
                         </TableRow>
                     ))}
 
-                    <br />
                     <TableRow>
-                        <TableCell align="right" colSpan={2}>Total</TableCell>
-                        <TableCell align="right">{ccyFormat(cartTotal)}</TableCell>
+                        <TableCell align="right" colSpan={3}>Total</TableCell>
+                        <TableCell align="right">{ccyFormat(cartTotal)}€</TableCell>
                         <TableCell ></TableCell>
                     </TableRow>
                 </TableBody>

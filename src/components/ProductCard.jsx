@@ -13,7 +13,7 @@ import { appConfig } from '../services/config';
 import { CartContext } from '../contexts/cartContext'
 import { useContext } from 'react';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     maxWidth: 345,
   },
