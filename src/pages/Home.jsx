@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import { fetchProducts } from '../services/api'
-import { config } from '../services/config'
 import ProductCard from '../components/ProductCard';
 
 const useStyles = makeStyles(() => ({
@@ -19,8 +18,7 @@ function Home() {
         const fetchData = async () => {
             try {
                 const data = await fetchProducts();
-                console.log(data);
-                setProducts(data)
+                setProducts(data);
             } catch (e) {
                 console.log(e);
             }
@@ -35,7 +33,7 @@ function Home() {
         <Grid container className={classes.container} spacing={3}>
             {products.map(product => {
                 return (
-                    <Grid key={product.id} xs={12} sm={6} md={4} item>
+                    <Grid key={product.id} xs={6} md={4} item>
                         <ProductCard product={product}></ProductCard>
                     </Grid>
                 )

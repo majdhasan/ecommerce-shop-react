@@ -11,3 +11,9 @@ export const fetchProducts = async () => {
   const { data } = await createAxios().get('/products');
   return data;
 };
+
+export const fetchProduct = async (productId) => {
+  const { data } = await createAxios().get(`/products/${productId}`);
+  return data;
+};
+

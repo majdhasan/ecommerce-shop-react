@@ -8,22 +8,36 @@ import {
   Route,
 } from "react-router-dom";
 import Home from './pages/Home';
+import Cart from './pages/Cart'
+import { CartProvider } from './contexts/cartContext'
+import Signup from './pages/Signup';
+import Signin from './pages/Signin';
+
 
 function App() {
   return (
     <div>
-      <Router>
-        <Header />
-        <Container>
-          <Switch>
-            <Route path="/">
-              <Home />
-            </Route>
-            <Route path="/users">
-            </Route>
-          </Switch>
-        </Container>
-      </Router>
+      <CartProvider>
+        <Router>
+          <Header />
+          <Container>
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/cart">
+                <Cart />
+              </Route>
+              <Route path="/signup">
+                <Signup />
+              </Route>
+              <Route path="/login">
+                <Signin />
+              </Route>
+            </Switch>
+          </Container>
+        </Router>
+      </CartProvider>
     </div >
   )
 }
