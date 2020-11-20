@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from 'react-router-dom'
 import { getOrder, setOrderAsPaid } from '../services/api'
 import PayButton from '../components/PayButton'
+import { Typography } from '@material-ui/core'
 
 const useStyles = makeStyles({
     button: {
@@ -15,41 +16,38 @@ const useStyles = makeStyles({
 });
 
 function Order() {
+    const [refresh, setRefresh] = useState(0)
     const [oderDetails, setOrderDetails] = useState(null)
     const { id } = useParams();
-    const classes = useStyles();
+
+    const fetchData = async () => {
+        try {
+            const order = await getOrder(id)
+            setOrderDetails(order)
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const order = await getOrder(id)
-                setOrderDetails(order)
-                console.log(order);
-            } catch (e) {
-                console.error(e)
-            }
-        }
         fetchData();
-    }, [])
+    }, [id, refresh])
 
     const handleSuccess = async () => {
         try {
             const result = await setOrderAsPaid(oderDetails._id)
-            console.log(result);
+            setRefresh(refresh + 1)
         } catch (e) {
             console.error(e)
         }
-
-
-
     }
 
     return (
         <div>
             <CartDetails />
-
             <br />
-            {oderDetails && <PayButton total={oderDetails.total.toString()} onSuccess={handleSuccess} fullWidth></PayButton>}
+            { (oderDetails && oderDetails.status === "paid") && <Typography> Your Order has been paid </Typography>}
+            {(oderDetails && oderDetails.status === "pending") && <PayButton total={oderDetails.total.toString()} onSuccess={handleSuccess} fullWidth></PayButton>}
         </div>
     )
 }
