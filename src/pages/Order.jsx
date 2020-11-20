@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { getOrder, setOrderAsPaid } from '../services/api'
 import PayButton from '../components/PayButton'
 import { Typography } from '@material-ui/core'
+import { CartContext } from '../contexts/cartContext'
 
 const useStyles = makeStyles({
     button: {
@@ -19,6 +20,7 @@ function Order() {
     const [refresh, setRefresh] = useState(0)
     const [oderDetails, setOrderDetails] = useState(null)
     const { id } = useParams();
+    const { emptyCart } = useContext(CartContext)
 
     const fetchData = async () => {
         try {
@@ -36,6 +38,7 @@ function Order() {
     const handleSuccess = async () => {
         try {
             const result = await setOrderAsPaid(oderDetails._id)
+            emptyCart();
             setRefresh(refresh + 1)
         } catch (e) {
             console.error(e)
@@ -44,9 +47,10 @@ function Order() {
 
     return (
         <div>
-            <CartDetails />
+            { (oderDetails && oderDetails.status !== "paid") && <CartDetails />}
+
             <br />
-            { (oderDetails && oderDetails.status === "paid") && <Typography> Your Order has been paid </Typography>}
+            { (oderDetails && oderDetails.status === "paid") && <Typography variant={"h4"}> Your Order has been paid </Typography>}
             {(oderDetails && oderDetails.status === "pending") && <PayButton total={oderDetails.total.toString()} onSuccess={handleSuccess} fullWidth></PayButton>}
         </div>
     )

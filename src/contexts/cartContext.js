@@ -39,7 +39,7 @@ export const CartProvider = ({ children }) => {
     setCart({ items, ...total });
   };
 
-  const removeFromCart = product => {
+  const removeFromCart = (product) => {
     const { items = [] } = cart;
     const productIndex = items.findIndex((item) => item.id === product.id);
     if (productIndex !== -1) {
@@ -52,8 +52,16 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  const emptyCart = () => {
+    const total = calculateCartTotal([]);
+    setCart({
+      items: [],
+      ...total,
+    });
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, emptyCart }}>
       {children}
     </CartContext.Provider>
   );
