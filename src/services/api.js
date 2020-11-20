@@ -22,3 +22,13 @@ export const createOrder = async (order) => {
   const { data } = await createAxios().post(`/orders`, order);
   return data;
 };
+
+export const getOrder = async (orderId) => {
+  const { data } = await createAxios().get(`/orders/${orderId}`);
+  return data;
+};
+
+export const setOrderAsPaid = async (orderId) => {
+  const { data } = await createAxios().post(`/markPaid/${orderId}`);
+  return data;
+};

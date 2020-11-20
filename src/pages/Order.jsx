@@ -1,73 +1,57 @@
-import React, { useContext } from 'react'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import CheckoutForm from '../components/CheckoutForm'
+import React, { useContext, useEffect, useState } from 'react'
 import CartDetails from '../components/CartDetails'
-import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
-import { CartContext } from '../contexts/cartContext'
-import { fetchProducts , createOrder } from '../services/api'
+import { useParams } from 'react-router-dom'
+import { getOrder, setOrderAsPaid } from '../services/api'
+import PayButton from '../components/PayButton'
 
 const useStyles = makeStyles({
     button: {
         marginTop: "25px"
+    },
+    paypal: {
+        marginTop: "40px"
     }
-
 });
 
-function Checkout() {
-
-    const { cart } = useContext(CartContext);
+function Order() {
+    const [oderDetails, setOrderDetails] = useState(null)
+    const { id } = useParams();
     const classes = useStyles();
-    const formik = useFormik({
-        initialValues: {
-            firstname: "",
-            lastname: "",
-            email: "",
-            phone: "",
-            address: ""
-        },
-        validationSchema: Yup.object().shape({
-            firstname: Yup.string().required(),
-            lastname: Yup.string().required(),
-            email: Yup.string().email().required(),
-            phone: Yup.string().required(),
-            address: Yup.string().required(),
-        }),
-        onSubmit: async (values) => {
-            const { items = [] } = cart;
-            const productsId = items.map(item => `id_in=${item.id}`);
-            const query = productsId.join("&")
-            console.log(query);
 
+    useEffect(() => {
+        const fetchData = async () => {
             try {
-                const products = await fetchProducts(query)
-                let total = 0;
-                items.forEach(element => {
-                    const product = products.find(p => p.id === element.id)
-                    total += element.qty * product.price; 
-                });
-                const order = await createOrder({
-                    ...values,
-                    total
-                });
-                console.log("order", order);
+                const order = await getOrder(id)
+                setOrderDetails(order)
+                console.log(order);
             } catch (e) {
                 console.error(e)
             }
-
         }
-    })
-    const { getFieldProps } = formik;
+        fetchData();
+    }, [])
+
+    const handleSuccess = async () => {
+        try {
+            const result = await setOrderAsPaid(oderDetails._id)
+            console.log(result);
+        } catch (e) {
+            console.error(e)
+        }
+
+
+
+    }
 
     return (
         <div>
-            <CartDetails>-</CartDetails>
-            <CheckoutForm getFieldProps={getFieldProps}></CheckoutForm>
-            <Button onClick={formik.handleSubmit} className={classes.button} fullWidth variant="contained" color="primary"> Continue to Payment</Button>
+            <CartDetails />
 
+            <br />
+            {oderDetails && <PayButton total={oderDetails.total.toString()} onSuccess={handleSuccess} fullWidth></PayButton>}
         </div>
     )
 }
 
-export default Checkout
+export default Order

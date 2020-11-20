@@ -6,7 +6,8 @@ import CartDetails from '../components/CartDetails'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import { CartContext } from '../contexts/cartContext'
-import { fetchProducts , createOrder } from '../services/api'
+import { fetchProducts, createOrder } from '../services/api'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
     button: {
@@ -45,12 +46,13 @@ function Checkout() {
                 let total = 0;
                 items.forEach(element => {
                     const product = products.find(p => p.id === element.id)
-                    total += element.qty * product.price; 
+                    total += element.qty * product.price;
                 });
                 const order = await createOrder({
                     ...values,
                     total
                 });
+                history.push(`/orders/${order.id}`)
                 console.log("order", order);
             } catch (e) {
                 console.error(e)
@@ -59,12 +61,16 @@ function Checkout() {
         }
     })
     const { getFieldProps } = formik;
+    const history = useHistory();
 
     return (
         <div>
             <CartDetails>-</CartDetails>
             <CheckoutForm getFieldProps={getFieldProps}></CheckoutForm>
-            <Button onClick={formik.handleSubmit} className={classes.button} fullWidth variant="contained" color="primary"> Continue to Payment</Button>
+
+            <Button onClick={formik.handleSubmit}
+                className={classes.button}
+                fullWidth variant="contained" color="primary"> Continue to Payment</Button>
 
         </div>
     )

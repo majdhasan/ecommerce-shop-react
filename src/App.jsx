@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from './components/Header'
-import Footer from './components/Footer'
 import Container from '@material-ui/core/Container';
 import {
   BrowserRouter as Router,
@@ -13,6 +12,7 @@ import { CartProvider } from './contexts/cartContext'
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
 import Checkout from './pages/Checkout';
+import Order from './pages/Order'
 
 
 function App() {
@@ -38,8 +38,8 @@ function App() {
               <Route path="/checkout">
                 <Checkout />
               </Route>
-              <Route path="/orders/:code">
-                <Checkout />
+              <Route path="/orders/:id">
+                <Order />
               </Route>
             </Switch>
           </Container>
