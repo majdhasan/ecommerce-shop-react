@@ -12,6 +12,7 @@ import Cart from './pages/Cart'
 import { CartProvider } from './contexts/cartContext'
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
+import Checkout from './pages/Checkout';
 
 
 function App() {
@@ -33,6 +34,12 @@ function App() {
               </Route>
               <Route path="/login">
                 <Signin />
+              </Route>
+              <Route path="/checkout">
+                <Checkout />
+              </Route>
+              <Route path="/orders/:code">
+                <Checkout />
               </Route>
             </Switch>
           </Container>
