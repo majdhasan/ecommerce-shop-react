@@ -21,11 +21,12 @@ function App() {
       <CartProvider>
         <Router>
           <Header />
-          <Container>
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
+
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Container>
               <Route path="/cart">
                 <Cart />
               </Route>
@@ -41,8 +42,9 @@ function App() {
               <Route path="/orders/:id">
                 <Order />
               </Route>
-            </Switch>
-          </Container>
+            </Container>
+          </Switch>
+
         </Router>
       </CartProvider>
     </div >
