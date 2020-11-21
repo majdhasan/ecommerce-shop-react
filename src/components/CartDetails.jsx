@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-import Button from '@material-ui/core/Button';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -14,7 +13,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Avatar from '@material-ui/core/Avatar';
 import { appConfig } from '../services/config'
-import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   table: {

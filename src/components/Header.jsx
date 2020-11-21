@@ -6,8 +6,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -18,9 +16,6 @@ import { Link } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
   },
   title: {
     display: 'none',
@@ -79,19 +74,6 @@ export default function Header() {
   const { cart } = useContext(CartContext)
   const classes = useStyles();
 
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    >
-      <MenuItem >Profile</MenuItem>
-      <MenuItem >My account</MenuItem>
-    </Menu>
-  );
-
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -127,7 +109,6 @@ export default function Header() {
           <IconButton
             edge="end"
             aria-label="account of current user"
-            aria-controls={menuId}
             aria-haspopup="true"
             color="inherit"
           >

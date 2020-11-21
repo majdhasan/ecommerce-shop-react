@@ -12,9 +12,6 @@ const useStyles = makeStyles({
 
 });
 
-function ccyFormat(num) {
-    return `${num.toFixed(2)}`;
-}
 
 export default function Cart() {
     const classes = useStyles();
