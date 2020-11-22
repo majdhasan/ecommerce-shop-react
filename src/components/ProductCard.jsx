@@ -16,6 +16,7 @@ import { useContext } from 'react';
 const useStyles = makeStyles(() => ({
   root: {
     maxWidth: 345,
+    margin: "auto"
   },
   media: {
     height: 0,

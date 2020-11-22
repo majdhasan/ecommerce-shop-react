@@ -2,12 +2,13 @@ import React from "react";
 import Slider from "react-slick";
 import ProductCard from './ProductCard'
 import { makeStyles } from '@material-ui/core/styles';
-import './LandingPageCarousel.css' 
 
 const useStyles = makeStyles(() => ({
     productCard: {
-        margin: "auto",
-
+        margin: "20px 0",
+    },
+    carouselDiv: {
+        backgroundColor: "#406ab5cf"
     }
 }));
 
@@ -25,11 +26,14 @@ export default function LandingPageCarousel(props) {
         autoplaySpeed: 3000
     };
     return (
-        <Slider className={classes.productCard} {...settings}>
+        <Slider className={classes.card} {...settings}>
             {props.products.map(product => {
                 return (
-                    <div className={"carouselDiv"} key={product.id}>
-                        <ProductCard product={product}></ProductCard>
+                    <div className={classes.productCard} key={product.id}>
+                        <div className="mx-auto">
+                            <ProductCard className={classes.productCard} product={product}></ProductCard>
+                        </div>
+
                     </div>
 
                 )
